@@ -6,7 +6,8 @@ from datetime import datetime
 st.set_page_config(page_title="Monitoring Screen", layout="centered")
 
 # --- AUTH0 LOGIN ---
-if not st.experimental_user.is_logged_in:
+user = st.user
+if user is None:
     st.image("image1.jpg", use_container_width = True)
     st.title("Welcome to the Traffic Monitoring Dashboard 🚦")
     st.title("🔐 Login Required or Authentification")
