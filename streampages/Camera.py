@@ -31,20 +31,20 @@ def traffic_camera():
     with col1:
         st.subheader("Camera 1")
         video_url1 = "https://youtu.be/nnXjWVC6SW4"
-        st.video(video_url1, autoplay=True)
+        st.video(video_url1, autoplay=True, muted=True)
 
         st.subheader("Camera 2")
         VIDEO2_URL = "https://youtu.be/6d2N7Cdh6JA"
-        st.video(VIDEO2_URL,autoplay=True)
+        st.video(VIDEO2_URL,autoplay=True, muted=True)
 
     with col2:
         st.subheader("Camera 3")
         VIDEO3_URL = "https://youtu.be/LtartHuSj6U"
-        st.video(VIDEO3_URL,autoplay=True)
+        st.video(VIDEO3_URL,autoplay=True, muted=True)
 
         st.subheader("Camera 4")
         VIDEO4_URL = "https://youtu.be/Cf02sgFFJhw"
-        st.video(VIDEO4_URL,autoplay=True)
+        st.video(VIDEO4_URL,autoplay=True, muted=True)
 
 
 def main_camera():
