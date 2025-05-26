@@ -26,6 +26,7 @@ if st.sidebar.button("🚪 Logout"):
 date = datetime.today().strftime('%Y-%m-%d')
 st.title("Welcome to the Traffic Monitoring Dashboard 🚦")
 st.title(f"**Date** :red[{date}]")
+st.write("Please use the up left arrow to navigate through pages on mobile screen !!")
 
 # --- SIDEBAR INFO ---
 st.sidebar.title("Navigation")
