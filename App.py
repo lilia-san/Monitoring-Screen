@@ -29,8 +29,8 @@ st.title(f"**Date** :red[{date}]")
 
 # --- SIDEBAR INFO ---
 st.sidebar.title("Navigation")
-st.sidebar.markdown(f"👤 {st.user.name}")
-st.sidebar.markdown(f"📧 {st.user.email}")
+st.sidebar.markdown(f"👤 {user.name}")
+st.sidebar.markdown(f"📧 {user.email}")
 
 page = st.sidebar.selectbox("Go to", [
     "Dashboard Home", 
