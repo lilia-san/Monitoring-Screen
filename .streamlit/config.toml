@@ -1,0 +1,7 @@
+[theme] # You have to add this line
+
+primaryColor = '#a569bd' # Purple
+
+backgroundColor = '#fdf2e9' # belge
+
+secondaryBackgroundColor = '#aeb6bf' # Gray
