@@ -4,10 +4,6 @@ import numpy as np
 import random
 from datetime import datetime
 
-date = datetime.today().strftime('%Y-%m-%d')
-st.title("Welcome to the Traffic Monitoring Dashboard 🚦")
-st.title(f"**Date** :red[{date}]")
-
 vehicles_in = np.random.randint(100, size=(24))
 vehicles_out = np.random.randint(100, size=(24))
 chart_data = pd.DataFrame(
