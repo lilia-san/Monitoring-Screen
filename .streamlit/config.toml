@@ -2,6 +2,7 @@
 
 primaryColor = '#a569bd' # Purple
 
-backgroundColor = '#d0c7f3' # belge
+backgroundColor =  '#aeb6bf' # Gray
 
-secondaryBackgroundColor = '#aeb6bf' # Gray
+
+secondaryBackgroundColor = '#d0c7f3' # belge
