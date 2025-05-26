@@ -23,6 +23,7 @@ if st.sidebar.button("🚪 Logout"):
     st.stop()
 
 # --- HEADER SECTION ---
+user = st.user
 date = datetime.today().strftime('%Y-%m-%d')
 st.title("Welcome to the Traffic Monitoring Dashboard 🚦")
 st.title(f"**Date** :red[{date}]")
