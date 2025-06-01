@@ -5,16 +5,14 @@ from streamlit_option_menu import option_menu
 st.set_page_config(page_title="Traffic Monitoring System", layout="wide")
 
 # --- AUTHENTICATION ---
-st.login("auth0")  # Initiates Auth0 login flow
-user = st.user
+user = st.user  # Updated from st.experimental_user
 
 if not user:
     st.error("You need to log in to use this app.")
     st.stop()
 
-# Safely display user info
-user_display = getattr(user, "email", "Guest")
-st.sidebar.markdown(f"👤 {user_display}")
+# Sidebar with user info
+st.sidebar.markdown(f"👤 {user.name}")
 
 # Main menu
 with st.sidebar:
@@ -39,6 +37,7 @@ elif selected == "Prediction":
 elif selected == "About":
     about_module = importlib.import_module("streampages.About")
     about_module.app()
+
 
 
 
