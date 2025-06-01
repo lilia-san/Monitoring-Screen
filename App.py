@@ -32,34 +32,33 @@ st.sidebar.markdown(f"👤 {st.experimental_user.name}")
 st.sidebar.markdown(f"📧 {st.experimental_user.email}")
 
 page = st.sidebar.radio("Go to", [
-    "Dashboard Home", 
-    "Camera Display", 
-    "Plate tracking",
-    "Traffic Prediction", 
-    "Settings"
+    "🚗 **Dashboard Home**", 
+    "🎥 **Camera Display**", 
+    "🚨 **Plate tracking**",
+    "📈 **Traffic Prediction**", 
+    "⚙️ **Settings**"
 ])
 
 # --- PAGE ROUTING ---
-if page == "Dashboard Home":
+if page == "🚗 **Dashboard Home**":
     chart_module = importlib.import_module("streampages.Chart")
     chart_module.traffic_chart()
 
-elif page == "Camera Display":
+elif page == "🎥 **Camera Display**":
     camera_module = importlib.import_module("streampages.Camera")
     camera_module.main_camera()
 
-elif page == "Plate tracking":
+elif page == "🚨 **Plate tracking**":
     plate_module = importlib.import_module("streampages.Plate")
     plate_module.tracking()
 
-elif page == "Traffic Prediction":
+elif page == "📈 **Traffic Prediction**":
     pred_module = importlib.import_module("streampages.Prediction")
     pred_module.prediction()
 
-elif page == "Settings":
+elif page == "⚙️ **Settings**":
     settings_module = importlib.import_module("streampages.Settings")
     settings_module.settings_session()
-
 
 
 
