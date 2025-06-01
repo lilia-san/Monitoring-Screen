@@ -34,7 +34,7 @@ if user :
     st.sidebar.markdown(f"👤 {user.name}")
     st.sidebar.markdown(f"📧 {user.email}")
 
-page = st.sidebar.selectbox("Go to", [
+page = st.sidebar.radio("Go to", [
     "Dashboard Home", 
     "Camera Display", 
     "Plate tracking",
