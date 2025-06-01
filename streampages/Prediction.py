@@ -1,90 +1,68 @@
-import pandas as pd
 import streamlit as st
+import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.svm import SVC
-from sklearn.metrics import *
-from datetime import datetime
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier 
-from sklearn.ensemble import GradientBoostingClassifier
+import plotly.graph_objs as go
+from datetime import datetime, timedelta
 
-def processing():
-    scaler = StandardScaler()
-    encoder = LabelEncoder()
-
-    df = pd.read_csv("TrafficTwoMonth.csv")
-   
-    x = df.iloc[:,[2,7]]
-    y = df.iloc[:,-1]
-
-    x = pd.get_dummies(x, columns=['Day of the week']).astype(int)
-
-    x[["Total"]] = scaler.fit_transform(x[["Total"]])
-    y = encoder.fit_transform(y)
-    return (x, y)
-
-
-def training_model(x,y,model_name):
-    x_train,x_test,y_train,y_test = train_test_split(x,y, test_size=0.2,random_state=0)
-    results = model_name(random_state = 0)
-    results.fit(x_train, y_train)
-    y_pred = results.predict(x_test)
-    cm = confusion_matrix(y_test,y_pred)
-    return (y_test, y_pred)
-
-
-def evaluate_model(y_true, y_pred, model_name):
-    acc = accuracy_score(y_true, y_pred)
-    rec = recall_score(y_true, y_pred,average="macro")
-    f1 = f1_score(y_true, y_pred,average="macro")
-    return {"Model": model_name, "ACC": acc, "REC": rec, "F1": f1}
-
-
-def show_case(results):
-    df_results = pd.DataFrame(results)
-
-    # Display Data Table
-    st.subheader("Model Performance Metrics")
-    st.dataframe(df_results)
-
-    # Plot Grouped Bar Chart
-    st.subheader("Model Comparison: Accuracy (ACC), Recall (REC), F1-score (F1)")
-
-    metrics = ["ACC", "REC", "F1"]
-    models = df_results["Model"]
-    x = np.arange(len(models))  # the label locations
-    width = 0.2  # the width of the bars
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-    
-    for i, metric in enumerate(metrics):
-        ax.bar(x + i * width, df_results[metric], width, label=metric)
-
-    ax.set_xlabel("Model")
-    ax.set_ylabel("Score")
-    ax.set_title("Model Comparison by Metric")
-    ax.set_xticks(x + width)
-    ax.set_xticklabels(models, rotation=45)
-    ax.legend()
-    ax.grid(axis='y', linestyle='--', alpha=0.7)
-
-    st.pyplot(fig)
+# ----------------------
+# Simulate Historical Data
+# ----------------------
 
 def prediction():
-    x,y = processing()
-    y_test, y_rfc_pred = training_model(x,y,RandomForestClassifier)
-    rf_results = evaluate_model(y_test, y_rfc_pred, "RandomForest Classifier")
+    np.random.seed(42)
 
-    y_test, y_svc_res_pred = training_model(x,y,SVC)
-    svc_res_results = evaluate_model(y_test, y_svc_res_pred, "SVM")
+    hours = pd.date_range(end=datetime.now(), periods=72, freq='H')
+    vehicle_count = np.random.poisson(lam=80, size=72) + np.sin(np.linspace(0, 3*np.pi, 72)) * 20
 
-    y_test, y_gbm_pred = training_model(x,y,GradientBoostingClassifier)
-    gbm_results = evaluate_model(y_test, y_gbm_pred, "Gradient Boosting")   
+    data = pd.DataFrame({'Timestamp': hours, 'Vehicle Count': vehicle_count})
+    data.set_index('Timestamp', inplace=True)
 
-    results = [rf_results,  svc_res_results, gbm_results]
-    show_case(results)
+    # ----------------------
+    # Simulate Predictions
+    # ----------------------
+    forecast_hours = 12
+    last_time = data.index[-1]
+    future_times = [last_time + timedelta(hours=i) for i in range(1, forecast_hours + 1)]
+    predicted_count = np.random.poisson(lam=90, size=forecast_hours) + np.sin(np.linspace(0, 2*np.pi, forecast_hours)) * 15
 
-#prediction()
+    forecast = pd.DataFrame({
+        'Timestamp': future_times,
+        'Predicted Count': predicted_count
+    })
+    forecast.set_index('Timestamp', inplace=True)
+
+    # ----------------------
+    # Streamlit UI
+    # ----------------------
+    st.title("📊 Traffic Prediction Dashboard")
+    st.markdown("Visualize traffic volume and forecast for the next few hours using historical trends.")
+
+    # Line chart with past and future
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=data.index, y=data['Vehicle Count'],
+                            mode='lines+markers', name='Historical', line=dict(color='blue')))
+    fig.add_trace(go.Scatter(x=forecast.index, y=forecast['Predicted Count'],
+                            mode='lines+markers', name='Forecast', line=dict(color='orange', dash='dash')))
+
+    fig.update_layout(title="Traffic Volume Forecast",
+                    xaxis_title="Time",
+                    yaxis_title="Number of Vehicles",
+                    template="plotly_white")
+
+    st.plotly_chart(fig, use_container_width=True)
+
+    # ----------------------
+    # User Controls
+    # ----------------------
+    st.sidebar.header("Forecast Controls")
+    range_hours = st.sidebar.slider("How many hours ahead to view?", 1, 12, 6)
+    subset_forecast = forecast.head(range_hours)
+
+    st.subheader(f"🔮 Forecast for the Next {range_hours} Hours")
+    st.dataframe(subset_forecast)
+
+    # Optional peak indicator
+    peak_hour = subset_forecast['Predicted Count'].idxmax()
+    peak_value = subset_forecast['Predicted Count'].max()
+    st.markdown(f"**⏰ Expected Peak Hour:** {peak_hour.strftime('%Y-%m-%d %H:%M')} with {int(peak_value)} vehicles.")
+
