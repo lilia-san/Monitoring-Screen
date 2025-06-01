@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 def prediction():
     np.random.seed(42)
 
-    hours = pd.date_range(end=datetime.now(), periods=72, freq='H')
+    hours = pd.date_range(end=datetime.now(), periods=72, freq='h')
     vehicle_count = np.random.poisson(lam=80, size=72) + np.sin(np.linspace(0, 3*np.pi, 72)) * 20
 
     data = pd.DataFrame({'Timestamp': hours, 'Vehicle Count': vehicle_count})
