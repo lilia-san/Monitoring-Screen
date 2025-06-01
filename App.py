@@ -1,64 +1,44 @@
 import streamlit as st
 import importlib
-from datetime import datetime
+from streamlit_option_menu import option_menu
 
-# Set Streamlit page config
-st.set_page_config(page_title="Monitoring Screen", layout="centered")
+st.set_page_config(page_title="Traffic Monitoring System", layout="wide")
 
-# --- AUTH0 LOGIN ---
-if not st.experimental_user.is_logged_in:
-    st.image("image1.jpg", use_container_width = True)
-    st.title("Welcome to the Traffic Monitoring Dashboard 🚦")
-    st.title("🔐 Login Required or Authentification")
-    st.markdown("Please log in to access the traffic monitoring dashboard.")
-    if st.button("Login with Auth0 or Google"):
-        st.login("auth0")
-    
+# --- AUTHENTICATION ---
+st.login("auth0")  # Initiates Auth0 login flow
+user = st.user
+
+if not user:
+    st.error("You need to log in to use this app.")
     st.stop()
 
-# --- LOGOUT HANDLER ---
-if st.sidebar.button("🚪 Logout"):
-    st.logout()
-    st.stop()
+# Safely display user info
+user_display = getattr(user, "email", "Guest")
+st.sidebar.markdown(f"👤 {user_display}")
 
-# --- HEADER SECTION ---
-date = datetime.today().strftime('%Y-%m-%d')
-st.title("Welcome to the Traffic Monitoring Dashboard 🚦")
-st.title(f"**Date** :red[{date}]")
+# Main menu
+with st.sidebar:
+    selected = option_menu(
+        "Main Menu",
+        ["Dashboard", "Data Analysis", "Prediction", "About"],
+        icons=["speedometer", "bar-chart", "graph-up-arrow", "info-circle"],
+        menu_icon="cast",
+        default_index=0,
+    )
 
-# --- SIDEBAR INFO ---
-st.sidebar.title("Navigation")
-st.sidebar.markdown(f"👤 {st.experimental_user.name}")
-st.sidebar.markdown(f"📧 {st.experimental_user.email}")
-
-page = st.sidebar.radio("Go to", [
-    "Dashboard Home", 
-    "Camera Display", 
-    "Plate tracking",
-    "Traffic Prediction", 
-    "Settings"
-])
-
-# --- PAGE ROUTING ---
-if page == "Dashboard Home":
-    chart_module = importlib.import_module("streampages.Chart")
-    chart_module.traffic_chart()
-
-elif page == "Camera Display":
-    camera_module = importlib.import_module("streampages.Camera")
-    camera_module.main_camera()
-
-elif page == "Plate tracking":
-    plate_module = importlib.import_module("streampages.Plate")
-    plate_module.tracking()
-
-elif page == "Traffic Prediction":
+# --- DYNAMIC MODULE IMPORT ---
+if selected == "Dashboard":
+    dashboard_module = importlib.import_module("streampages.Dashboard")
+    dashboard_module.app()
+elif selected == "Data Analysis":
+    analysis_module = importlib.import_module("streampages.Analysis")
+    analysis_module.app()
+elif selected == "Prediction":
     pred_module = importlib.import_module("streampages.Prediction")
-    pred_module.prediction()
-
-elif page == "Settings":
-    settings_module = importlib.import_module("streampages.Settings")
-    settings_module.settings_session()
+    pred_module.app()
+elif selected == "About":
+    about_module = importlib.import_module("streampages.About")
+    about_module.app()
 
 
 
