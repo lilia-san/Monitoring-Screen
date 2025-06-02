@@ -75,7 +75,13 @@ def traffic_chart():
     total_count = int(chart_data['Vehicles_In'].sum()) + int(chart_data['Vehicles_Out'].sum())
     st.sidebar.metric("📦 Total Vehicles Counted", f"{total_count:,}")
 
-    top_hour = data.groupby('Hour')['Count'].sum().idxmax()
+    # Add a new column with total traffic for each hour
+    chart_data["Total"] = chart_data["Vehicles_In"] + chart_data["Vehicles_Out"]
+    
+    # Find the hour with the highest total traffic
+    top_hour = chart_data.loc[chart_data["Total"].idxmax(), "Hours"]
+    
+    # Display in sidebar
     st.sidebar.metric("⏰ Busiest Hour", f"{top_hour}:00")
 
     top_type = data.groupby('Vehicle Type')['Count'].sum().idxmax()
