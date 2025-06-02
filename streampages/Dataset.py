@@ -8,14 +8,14 @@ vehicles_in = np.random.randint(1000, size=(24))
 vehicles_out = np.random.randint(1000, size=(24))
 chart_data = pd.DataFrame(
     {
-        "Timestamp": pd.date_range(start="2025-05-25", periods=24, freq='H'),
+        "Timestamp": pd.date_range(start="2025-05-25", periods=24, freq='h'),
         "Hours": list(range(24)),
         "Vehicles_In": vehicles_in,
         "Vehicles_Out": vehicles_out
     }
  )
 
-hours = pd.date_range(end=pd.Timestamp.now(), periods=7 * 24, freq='H')  # last 7 days
+hours = pd.date_range(end=pd.Timestamp.now(), periods=7 * 24, freq='h')  # last 7 days
 vehicle_types = ['Car', 'Truck', 'Bus', 'Motorcycle']
 data = pd.DataFrame({
         'Timestamp': np.tile(hours, len(vehicle_types)),
