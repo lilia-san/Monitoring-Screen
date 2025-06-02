@@ -23,7 +23,8 @@ def prediction():
     forecast_hours = 12
     last_time = data.index[-1]
     future_times = [last_time + timedelta(hours=i) for i in range(1, forecast_hours + 1)]
-    predicted_count = np.random.poisson(lam=90, size=forecast_hours) + np.sin(np.linspace(0, 2*np.pi, forecast_hours)) * 15
+    predicted_count = (np.random.poisson(lam=90, size=forecast_hours) + (np.sin(np.linspace(0, 2*np.pi, forecast_hours)) * 15)).astype(int)
+    predicted_count = np.maximum(predicted_count, 0)
 
     forecast = pd.DataFrame({
         'Timestamp': future_times,
@@ -64,5 +65,5 @@ def prediction():
     # Optional peak indicator
     peak_hour = subset_forecast['Predicted Count'].idxmax()
     peak_value = subset_forecast['Predicted Count'].max()
-    st.markdown(f"**⏰ Expected Peak Hour:** {peak_hour.strftime('%Y-%m-%d %H:%M')} with {int(peak_value)} vehicles.")
+    st.markdown(f"**⏰ :red[Expected Peak Hour:]** {peak_hour.strftime('%Y-%m-%d %H:%M')} with {int(peak_value)} vehicles.")
 
