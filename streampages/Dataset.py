@@ -8,22 +8,27 @@ vehicles_in = np.random.randint(1000, size=(24))
 vehicles_out = np.random.randint(1000, size=(24))
 chart_data = pd.DataFrame(
     {
-        "Timestamp": pd.date_range(start="2025-05-25", periods=24, freq='h'),
+        "Timestamp": pd.date_range(start="2025-01-01", periods=24, freq='h'),
         "Hours": list(range(24)),
         "Vehicles_In": vehicles_in,
         "Vehicles_Out": vehicles_out
     }
  )
 
-hours = pd.date_range(end=pd.Timestamp.now(), periods=7 * 24, freq='h')  # last 7 days
+# Sample dataset
 vehicle_types = ['Car', 'Truck', 'Bus', 'Motorcycle']
+date_range = pd.date_range("2023-12-06", "2023-12-09 23:00:00", freq="h")
+n = len(date_range)
+
 data = pd.DataFrame({
-        'Timestamp': np.tile(hours, len(vehicle_types)),
-        'Vehicle Type': np.repeat(vehicle_types, len(hours)),
-        'Count': np.random.poisson(lam=60, size=len(hours) * len(vehicle_types)),
+    "Timestamp": np.tile(date_range, len(vehicle_types)),
+    "Vehicle Type": np.repeat(vehicle_types, n),
+    "Count": np.random.poisson(lam=60, size=n * len(vehicle_types))
 })
-data['Day'] = data['Timestamp'].dt.day_name()
-data['Hour'] = data['Timestamp'].dt.hour
+
+# Add day & hour for later use
+data["Date"] = data["Timestamp"].dt.date
+data["Hour"] = data["Timestamp"].dt.hour
 
 
 daysofweek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
