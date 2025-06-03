@@ -37,6 +37,11 @@ def traffic_camera():
         VIDEO2_URL = "https://youtu.be/6d2N7Cdh6JA"
         st.video(VIDEO2_URL,autoplay=True, muted=True)
 
+        st.subheader("Camera 5")
+        VIDEO5_URL = "https://youtu.be/p0SMHE1YENE"
+        st.video(VIDEO5_URL,autoplay=True, muted=True)
+
+
     with col2:
         st.subheader("Camera 3")
         VIDEO3_URL = "https://youtu.be/LtartHuSj6U"
