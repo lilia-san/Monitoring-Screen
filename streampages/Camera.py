@@ -51,6 +51,10 @@ def traffic_camera():
         VIDEO4_URL = "https://youtu.be/Cf02sgFFJhw"
         st.video(VIDEO4_URL,autoplay=True, muted=True)
 
+        st.subheader("Camera 6")
+        VIDEO6_URL = "https://youtu.be/jWqFoNPP47s"
+        st.video(VIDEO6_URL,autoplay=True, muted=True)
+
 
 def main_camera():
   Region_Filter()
