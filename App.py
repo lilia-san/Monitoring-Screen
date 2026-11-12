@@ -3,10 +3,10 @@ import importlib
 from datetime import datetime
 
 # Set Streamlit page config
-st.set_page_config(page_title="Monitoring Screen", layout="centered")
+#st.set_page_config(page_title="Monitoring Screen", layout="centered")
 
 # --- AUTH0 LOGIN ---
-if not st.user.is_logged_in:
+'''if not st.user.is_logged_in:
     st.image("image1.jpg", use_container_width = True)
     st.title("Welcome to the Traffic Monitoring Dashboard 🚦")
     st.title("🔐 Login Required or Authentification")
@@ -14,7 +14,7 @@ if not st.user.is_logged_in:
     if st.button("Login with Auth0 or Google"):
         st.login("auth0")
     
-    st.stop()
+    st.stop()'''
 
 # --- LOGOUT HANDLER ---
 if st.sidebar.button("🚪 Logout"):
